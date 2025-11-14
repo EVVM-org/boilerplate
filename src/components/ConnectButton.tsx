@@ -15,7 +15,7 @@ export const ConnectButton = () => {
   }
 
   if (!isConnected)
-    return <Button className="rounded-full" onClick={() => open()}>Connect wallet</Button>;
+    return <Button className="rounded-full cursor-pointer" onClick={() => open()}>Connect wallet</Button>;
 
   return (
     <div>

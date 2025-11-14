@@ -11,7 +11,7 @@ export const getBalance = async (
 ): Promise<bigint> => {
   const result = await readContract(config, {
     abi: EvvmABI,
-    address: evvmAddress as `0x${string}`,
+    address: evvmAddress,
     functionName: "getBalance",
     args: [user, token],
   });
@@ -28,7 +28,7 @@ export const isValidAsyncNonce = async (
 ): Promise<boolean> => {
   const result = await readContract(config, {
     abi: EvvmABI,
-    address: evvmAddress as `0x${string}`,
+    address: evvmAddress,
     functionName: "getIfUsedAsyncNonce",
     args: [user, nonce],
   });

@@ -58,7 +58,7 @@ export const Pay = () => {
   if (!isConnected || !address) return null;
 
   return (
-    <div className="flex text-center justify-center align-middle gap-3 bg-secondary rounded-xl p-3">
+    <div className="flex flex-wrap text-center items-center justify-center align-middle gap-3 bg-secondary rounded-xl p-3">
       <p className="text-xl">Pay</p>
       <Input
         type="number"
@@ -83,7 +83,7 @@ export const Pay = () => {
       </Select>
       <p className="text-xl">to</p>
       <p className="text-xl">{shortAcc}</p>
-      <Button onClick={onExecute} disabled={loading}>
+      <Button className="cursor-pointer" onClick={onExecute} disabled={loading}>
         {loading ? <Spinner /> : "Execute"}
       </Button>
     </div>

@@ -34,16 +34,21 @@ export const usePayments = () => {
     if (!signer) return;
     setLoading(true);
 
-    const result = await readContract(config, {
-      abi: EvvmABI,
-      address: evvmAddress,
-      functionName: "getNextCurrentSyncNonce",
-      args: [signer],
-    });
+    try {
+      const result = await readContract(config, {
+        abi: EvvmABI,
+        address: evvmAddress,
+        functionName: "getNextCurrentSyncNonce",
+        args: [signer],
+      });
+      if (!result)
+        throw new Error(`Error fetching currentSyncNonce: ${result}`);
 
-    if (!result) throw new Error(`Error fetching currentSyncNonce: ${result}`);
+      setCurrentSyncNonce(result as bigint);
+    } catch (e) {
+      console.error(e);
+    }
 
-    setCurrentSyncNonce(result as bigint);
     setLoading(false);
   };
 
