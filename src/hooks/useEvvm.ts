@@ -1,7 +1,7 @@
 "use client";
 
 import { evvmAddress } from "@/config";
-import { readContracts } from "@wagmi/core";
+import { readContract, readContracts } from "@wagmi/core";
 import { EvvmABI } from "@evvm/viem-signature-library";
 import { useEffect, useState } from "react";
 import { config } from "@/config";
@@ -44,30 +44,31 @@ export const useEvvm = () => {
    */
   const _fetchEvvmInfo = async () => {
     setLoading(true);
-    const [evvmIDResult, stakingAddrResult, nsAddrResult] = await readContracts(
-      config,
-      { contracts },
-    );
 
-    console.log({
-      evvmIDResult,
-      stakingAddrResult,
-      nsAddrResult,
+    const _id: any = await readContract(config, {
+      abi: EvvmABI,
+      address: evvmAddress,
+      functionName: "getEvvmID",
+      args: [],
     });
 
-    setEvvmID(
-      evvmIDResult.result ? BigInt(String(evvmIDResult.result)) : undefined,
-    );
-    setStakingAddress(
-      typeof stakingAddrResult?.result === "string"
-        ? stakingAddrResult.result
-        : undefined,
-    );
-    setNameserviceAddress(
-      typeof nsAddrResult?.result === "string"
-        ? nsAddrResult.result
-        : undefined,
-    );
+    const _stakingAdd: any = await readContract(config, {
+      abi: EvvmABI,
+      address: evvmAddress,
+      functionName: "getStakingContractAddress",
+      args: [],
+    });
+
+    const _nsAdd: any = await readContract(config, {
+      abi: EvvmABI,
+      address: evvmAddress,
+      functionName: "getNameServiceAddress",
+      args: [],
+    });
+
+    if (_id.result) setEvvmID(_id.result);
+    if (_stakingAdd.result) setStakingAddress(_stakingAdd.result);
+    if (_nsAdd.result) setNameserviceAddress(_nsAdd.result);
 
     setLoading(false);
   };
