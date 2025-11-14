@@ -2,6 +2,12 @@ import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
 import { mainnet, arbitrum } from "@reown/appkit/networks";
 import type { AppKitNetwork } from "@reown/appkit/networks";
 
+export const evvmAddress = process.env.NEXT_PUBLIC_EVVM_ADDRESS as `0x${string}`
+
+if (!evvmAddress) {
+  throw new Error("EVVM address is not defined");
+}
+
 // Get projectId from https://dashboard.reown.com
 export const projectId =
   process.env.NEXT_PUBLIC_PROJECT_ID || "b56e18d47c72ab683b10814fe9495694"; // this is a public projectId only to use on localhost
