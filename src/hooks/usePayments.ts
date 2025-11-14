@@ -1,3 +1,5 @@
+'use client'
+
 import { config, evvmAddress } from "@/config";
 import { EvvmABI, EVVMSignatureBuilder } from "@evvm/viem-signature-library";
 import { getWalletClient, readContract, writeContract } from "@wagmi/core";
@@ -30,6 +32,7 @@ export const usePayments = () => {
    */
   const _fetchNextCurrentSyncNonce = async () => {
     if (!signer) return;
+    setLoading(true);
 
     const result = await readContract(config, {
       abi: EvvmABI,

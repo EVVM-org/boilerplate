@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAppKit } from "@reown/appkit/react";
 import React, { type ReactNode } from "react";
 import { cookieToInitialState, WagmiProvider, type Config } from "wagmi";
+import { ThemeProvider } from "./ThemeProvider";
 
 // Set up queryClient
 const queryClient = new QueryClient();
@@ -23,7 +24,7 @@ export const modal = createAppKit({
   projectId,
   networks,
   metadata,
-  themeMode: "light",
+  themeMode: 'dark',
   features: {
     analytics: true, // Optional - defaults to your Cloud configuration
   },
@@ -49,7 +50,16 @@ function ContextProvider({
       config={wagmiAdapter.wagmiConfig as Config}
       initialState={initialState}
     >
-      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </QueryClientProvider>
     </WagmiProvider>
   );
 }

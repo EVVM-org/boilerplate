@@ -1,9 +1,14 @@
+"use client";
+
 import { getBalance } from "@/lib/evvm/utils";
 import { useEffect, useState } from "react";
 
 type HexString = `0x${string}`;
 
-export const useBalances = (user: HexString, tokens: HexString[]) => {
+export const useBalances = (
+  user: HexString | undefined,
+  tokens: HexString[],
+) => {
   const [loading, setLoading] = useState<boolean>(true);
   const [balances, setBalances] = useState<
     Record<HexString, bigint | undefined>
@@ -11,13 +16,14 @@ export const useBalances = (user: HexString, tokens: HexString[]) => {
 
   useEffect(() => {
     _fetchBalances();
-  }, []);
+  }, [user]);
 
   /**
    * For each token provided, calls `getBalance` and saves the results
    * in state
    */
   const _fetchBalances = async () => {
+    if (!user) return;
     setLoading(true);
     const _balances = await Promise.all(tokens.map((t) => getBalance(user, t)));
 

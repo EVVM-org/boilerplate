@@ -1,7 +1,15 @@
+import { Balances } from "@/components/Balances";
+import { EvvmInfo } from "@/components/EvvmInfo";
+import { Hero } from "@/components/Hero";
+
 export default function Home() {
   return (
-    <div className="w-full">
-      <h1 className="text-center">EVVM</h1>
-    </div>
+    <main>
+      <Hero />
+      <div className="flex w-[60%] mx-auto gap-2">
+        <EvvmInfo />
+        <Balances />
+      </div>
+    </main>
   );
 }

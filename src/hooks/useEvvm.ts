@@ -1,3 +1,5 @@
+"use client";
+
 import { evvmAddress } from "@/config";
 import { readContracts } from "@wagmi/core";
 import { EvvmABI } from "@evvm/viem-signature-library";
@@ -41,10 +43,17 @@ export const useEvvm = () => {
    * Fetch summary info for EVVM contract: evvmID, stakingAddress, and NameService address
    */
   const _fetchEvvmInfo = async () => {
+    setLoading(true);
     const [evvmIDResult, stakingAddrResult, nsAddrResult] = await readContracts(
       config,
       { contracts },
     );
+
+    console.log({
+      evvmIDResult,
+      stakingAddrResult,
+      nsAddrResult,
+    });
 
     setEvvmID(
       evvmIDResult.result ? BigInt(String(evvmIDResult.result)) : undefined,

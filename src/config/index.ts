@@ -1,8 +1,9 @@
 import { WagmiAdapter } from "@reown/appkit-adapter-wagmi";
-import { mainnet, arbitrum } from "@reown/appkit/networks";
+import { arbitrumSepolia, sepolia } from "@reown/appkit/networks";
 import type { AppKitNetwork } from "@reown/appkit/networks";
 
-export const evvmAddress = process.env.NEXT_PUBLIC_EVVM_ADDRESS as `0x${string}`
+export const evvmAddress = process.env
+  .NEXT_PUBLIC_EVVM_ADDRESS as `0x${string}`;
 
 if (!evvmAddress) {
   throw new Error("EVVM address is not defined");
@@ -16,7 +17,7 @@ if (!projectId) {
   throw new Error("Project ID is not defined");
 }
 
-export const networks = [mainnet, arbitrum] as [
+export const networks = [sepolia, arbitrumSepolia] as [
   AppKitNetwork,
   ...AppKitNetwork[],
 ];
