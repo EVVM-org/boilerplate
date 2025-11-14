@@ -8,7 +8,7 @@ export const EvvmInfo = () => {
   const { loading, evvmID } = useEvvm();
 
   return (
-    <div className="bg-secondary rounded-xl w-full p-3">
+    <div className="bg-secondary rounded-xl p-3">
       <h2 className="text-xl">EVVM Info</h2>
 
       <p>EVVM Address: {evvmAddress}</p>

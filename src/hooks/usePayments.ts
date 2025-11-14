@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { config, evvmAddress } from "@/config";
 import { EvvmABI, EVVMSignatureBuilder } from "@evvm/viem-signature-library";
