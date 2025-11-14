@@ -3,10 +3,11 @@ import type { Metadata } from "next";
 import { headers } from "next/headers"; // added
 import "./globals.css";
 import ContextProvider from "@/context";
+import { Navbar } from "@/components/Navbar";
 
 export const metadata: Metadata = {
-  title: "AppKit in Next.js + wagmi",
-  description: "AppKit example dApp",
+  title: "EVVM app",
+  description: "EVVM app",
 };
 
 export default async function RootLayout({
@@ -20,7 +21,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ContextProvider cookies={cookies}>{children}</ContextProvider>
+        <ContextProvider cookies={cookies}>
+          <Navbar />
+          {children}
+        </ContextProvider>
       </body>
     </html>
   );
