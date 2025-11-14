@@ -1,31 +1,10 @@
 "use client";
 
 import { evvmAddress } from "@/config";
-import { readContract, readContracts } from "@wagmi/core";
+import { readContract } from "@wagmi/core";
 import { EvvmABI } from "@evvm/viem-signature-library";
 import { useEffect, useState } from "react";
 import { config } from "@/config";
-
-const contracts = [
-  {
-    abi: EvvmABI as any,
-    address: evvmAddress,
-    functionName: "getEvvmID",
-    args: [],
-  },
-  {
-    abi: EvvmABI as any,
-    address: evvmAddress,
-    functionName: "getStakingContractAddress",
-    args: [],
-  },
-  {
-    abi: EvvmABI as any,
-    address: evvmAddress,
-    functionName: "getNameServiceAddress",
-    args: [],
-  },
-];
 
 export const useEvvm = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -66,9 +45,9 @@ export const useEvvm = () => {
       args: [],
     });
 
-    if (_id.result) setEvvmID(_id.result);
-    if (_stakingAdd.result) setStakingAddress(_stakingAdd.result);
-    if (_nsAdd.result) setNameserviceAddress(_nsAdd.result);
+    if (_id) setEvvmID(_id);
+    if (_stakingAdd) setStakingAddress(_stakingAdd);
+    if (_nsAdd) setNameserviceAddress(_nsAdd);
 
     setLoading(false);
   };
