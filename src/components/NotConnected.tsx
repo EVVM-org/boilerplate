@@ -8,8 +8,19 @@ import {
   EmptyContent,
 } from "./ui/empty";
 import { ConnectButton } from "./ConnectButton";
+import { Spinner } from "./ui/spinner";
 
-export const NotConected = () => {
+interface IProps {
+  loading: boolean;
+}
+export const NotConected: React.FC<IProps> = ({ loading }) => {
+  if (loading)
+    return (
+      <div className="flex justify-center">
+        <Spinner className="w-12 h-auto" />
+      </div>
+    );
+
   return (
     <Empty>
       <EmptyHeader>

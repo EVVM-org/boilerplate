@@ -1,7 +1,9 @@
 {
-  "name": "next-wagmi-app-router",
+  "name": "evvm-boilerplate",
   "version": "0.1.0",
   "private": true,
+  "author": "EVVM",
+  "repository": "https://github.com/EVVM-org/boilerplate",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -2,21 +2,12 @@
 
 import { DUMMY_ACCOUNT, ETH_TOKEN, MATE_TOKEN } from "@/lib/evvm/constants";
 import { useAccount } from "wagmi";
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-} from "./ui/field";
 import { Input } from "./ui/input";
 import {
   Select,
   SelectTrigger,
   SelectContent,
   SelectValue,
-  SelectGroup,
-  SelectLabel,
   SelectItem,
 } from "./ui/select";
 import { usePayments } from "@/hooks/usePayments";
@@ -35,7 +26,11 @@ const tokens: { name: string; value: `0x${string}` }[] = [
   },
 ];
 
-export const Pay = () => {
+interface IProps {
+  onPayment: () => void;
+}
+
+export const Pay: React.FC<IProps> = ({ onPayment }) => {
   const { isConnected, address } = useAccount();
   const [amount, setAmount] = useState("10000000");
   const [token, setToken] = useState<`0x${string}`>(tokens[0].value);
@@ -51,8 +46,8 @@ export const Pay = () => {
   }, [DUMMY_ACCOUNT]);
 
   const onExecute = async () => {
-    console.log("onExecute");
     await pay(DUMMY_ACCOUNT, token, BigInt(amount), 0n);
+    onPayment();
   };
 
   if (!isConnected || !address) return null;

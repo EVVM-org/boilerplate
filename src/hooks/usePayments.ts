@@ -2,7 +2,12 @@
 
 import { config, evvmAddress } from "@/config";
 import { EvvmABI, EVVMSignatureBuilder } from "@evvm/viem-signature-library";
-import { getWalletClient, readContract, writeContract } from "@wagmi/core";
+import {
+  getTransactionReceipt,
+  getWalletClient,
+  readContract,
+  writeContract,
+} from "@wagmi/core";
 import { useAccount } from "wagmi";
 import { useEffect, useMemo, useState } from "react";
 import { useEvvm } from "./useEvvm";
@@ -14,7 +19,9 @@ export const usePayments = () => {
   const { evvmID, loading: evvmLoading } = useEvvm();
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [currentSyncNonce, setCurrentSyncNonce] = useState<bigint>(0n);
+  const [currentSyncNonce, setCurrentSyncNonce] = useState<
+    bigint | undefined
+  >();
   const [executor, setExecutor] = useState<HexString>(
     "0x0000000000000000000000000000000000000000",
   );
@@ -35,16 +42,16 @@ export const usePayments = () => {
     setLoading(true);
 
     try {
-      const result = await readContract(config, {
+      const _nonce = await readContract(config, {
         abi: EvvmABI,
         address: evvmAddress,
         functionName: "getNextCurrentSyncNonce",
         args: [signer],
       });
-      if (!result)
-        throw new Error(`Error fetching currentSyncNonce: ${result}`);
 
-      setCurrentSyncNonce(result as bigint);
+	  console.log({ _nonce })
+
+      setCurrentSyncNonce(_nonce as bigint);
     } catch (e) {
       console.error(e);
     }
@@ -62,8 +69,9 @@ export const usePayments = () => {
     priorityFee: bigint,
     asyncNonce?: bigint,
   ) => {
+    if (!signer || currentSyncNonce === undefined || evvmID === undefined)
+      return;
     setLoading(true);
-    if (!signer || !evvmID) return;
 
     const signatureBuilder = new EVVMSignatureBuilder(
       await getWalletClient(config),
@@ -97,7 +105,7 @@ export const usePayments = () => {
     );
 
     // execute payment
-    const _txHash = await writeContract(config, {
+    const txHash = await writeContract(config, {
       abi: EvvmABI,
       address: evvmAddress,
       functionName: "pay",
@@ -114,6 +122,11 @@ export const usePayments = () => {
         signature,
       ],
     });
+
+    const _res = await getTransactionReceipt(config, { hash: txHash });
+	if(_res.status =='success') setCurrentSyncNonce(curr => curr! + 1n)
+
+    setLoading(false);
   };
 
   return {

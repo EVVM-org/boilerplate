@@ -8,11 +8,17 @@ import { Pay } from "./Pay";
 import { DUMMY_ACCOUNT } from "@/lib/evvm/constants";
 import { IconArrowUpRight } from "@tabler/icons-react";
 import Link from "next/link";
+import { useCallback, useState } from "react";
 
 export const HomeCards = () => {
-  const account = useAccount();
+  const { isConnected, isConnecting, address } = useAccount();
+  const [redrawKey, setRedrawKey] = useState<number>(0);
 
-  if (!account.isConnected || !account.address) return <NotConected />;
+  const onPayment = useCallback(() => {
+    setRedrawKey((prev) => prev + 1);
+  }, []);
+
+  if (!isConnected || !address) return <NotConected loading={isConnecting} />;
 
   return (
     <>
@@ -21,15 +27,16 @@ export const HomeCards = () => {
           <EvvmInfo />
         </div>
         <div className="w-full overflow-hidden sm:w-[calc(50%-0.375rem)] shrink-0">
-          <Balances account={account.address} />
+          <Balances key={redrawKey} account={address} />
         </div>
         <div className="w-full overflow-hidden sm:w-[calc(50%-0.375rem)] shrink-0">
-          <Balances account={DUMMY_ACCOUNT} />
+          <Balances key={redrawKey} account={DUMMY_ACCOUNT} />
         </div>
         <div className="w-full overflow-hidden shrink-0">
-          <Pay />
+          <Pay onPayment={onPayment} />
         </div>
       </div>
+
       <div className="text-center mt-6">
         <Link
           href="https://evvm.info"
