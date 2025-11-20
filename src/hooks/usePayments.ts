@@ -49,7 +49,6 @@ export const usePayments = () => {
         args: [signer],
       });
 
-	  console.log({ _nonce })
 
       setCurrentSyncNonce(_nonce as bigint);
     } catch (e) {
@@ -124,7 +123,7 @@ export const usePayments = () => {
     });
 
     const _res = await getTransactionReceipt(config, { hash: txHash });
-	if(_res.status =='success') setCurrentSyncNonce(curr => curr! + 1n)
+    if (_res.status == "success") setCurrentSyncNonce((curr) => curr! + 1n);
 
     setLoading(false);
   };
